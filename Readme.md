@@ -4,13 +4,15 @@
 
 ```
 pip install pesapal
+pip install requests
 ```
 
 ## Example
 
 
 ```
-import pesapal, urllib2
+import pesapal
+import requests
 
 consumer_key ='consumer_key'
 consumer_secret = 'consumer_secret'
@@ -31,9 +33,9 @@ request_data = {
 post_params = {
   'oauth_callback': 'www.example.com/post_payment_page'
 }
-request = client.postDirectOrder(post_params, request_data)
+pesapal_request = client.postDirectOrder(post_params, request_data)
 # get url to display as an iframe
-print request.to_url()
+print pesapal_request.to_url()
 
 ### get order status
 
@@ -41,19 +43,22 @@ params = {
   'pesapal_merchant_reference': '000',
   'pesapal_transaction_tracking_id': '000'
 }
-request = client.queryPaymentStatus(params)
-url = request.to_url()
+pesapal_request = client.queryPaymentStatus(params)
+url = pesapal_request.to_url()
 print url
-response = urllib2.urlopen(url)
-print response.read()
+
+r = requests.get(pesapal_request.to_url())
+print r.text
 
 ### get order status by ref
 
 params = {
   'pesapal_merchant_reference': '000'
 }
-request = client.queryPaymentStatusByMerchantRef(params)
-print request.to_url()
+pesapal_request = client.queryPaymentStatusByMerchantRef(params)
+print pesapal_request.to_url()
+r = requests.get(pesapal_request.to_url())
+print r.text
 
 ### get detailed order status
 
@@ -61,9 +66,10 @@ params = {
   'pesapal_merchant_reference': '000',
   'pesapal_transaction_tracking_id': '000'
 }
-request = client.queryPaymentDetails(params)
-print request.to_url()
-
+pesapal_request = client.queryPaymentDetails(params)
+print pesapal_request.to_url()
+r = requests.get(pesapal_request.to_url())
+print r.text
 ```
 
 ## Api
